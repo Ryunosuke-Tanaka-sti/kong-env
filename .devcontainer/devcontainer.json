@@ -1,0 +1,23 @@
+{
+    "name": "Python Container",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "workspaceFolder": "/home/pyuser/python",
+    "service": "app",
+    "features": {
+        "ghcr.io/christophermacgown/devcontainer-features/direnv:1": {},
+        "ghcr.io/devcontainers/features/git": {}
+    },
+    "remoteUser": "pyuser",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "yzhang.markdown-all-in-one",
+                "ms-python.python",
+                "ms-python.black-formatter"
+            ]
+        }
+    }
+}

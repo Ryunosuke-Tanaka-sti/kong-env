@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./.devcontainer/Dockerfile
+    volumes:
+      - type: bind
+        source: ./
+        target: /home/pyuser/python
+    restart: always
+    tty: true
+    networks:
+      - kong-net
+  kong-database:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kongpass
+    volumes:
+      - type: volume
+        source: kong_data
+        target: /var/lib/postgresql/data
+    networks:
+      - kong-net
+
+  kong:
+    image: kong:latest
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kongpass
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+    depends_on:
+      - kong-database
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    networks:
+      - kong-net
+
+networks:
+  kong-net:
+    driver: bridge
+
+volumes:
+  kong_data:
