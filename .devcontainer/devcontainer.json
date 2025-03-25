@@ -1,7 +1,7 @@
 {
     "name": "Python Container",
     "dockerComposeFile": [
-        "../docker-compose.yml"
+        "../compose.yml"
     ],
     "workspaceFolder": "/home/pyuser/python",
     "service": "app",
